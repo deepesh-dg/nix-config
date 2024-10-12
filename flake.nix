@@ -5,6 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
   };
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew }:
@@ -16,38 +17,38 @@
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages =
-        [ pkgs.neovim,
-          pkgs.tmux,
-          pkgs.curl,
-          pkgs.libgcc,
-          pkgs.git,
-          pkgs.go,
-          pkgs.nodejs,
-          pkgs.ollama,
-          pkgs.openssl,
-          pkgs.pnpm,
+        [ pkgs.neovim
+          pkgs.tmux
+          pkgs.curl
+          # pkgs.libgcc
+          pkgs.git
+          pkgs.go
+          pkgs.nodejs
+          pkgs.ollama
+          pkgs.openssl
+          pkgs.pnpm
 
-          # casks packages
-          pkgs.obs-studio,
-          pkgs.obsidian,
-          pkgs.bitwarden-desktop,
-          pkgs.vscode,
-          pkgs.protonvpn-gui,
-          pkgs.anydesk,
-          pkgs.telegra-desktop,
-          pkgs.spotify,
-          pkgs.vlc,
-          pkgs.audacity,
-          pkgs.blender,
-          pkgs.filezilla,
-          pkgs.docker_27,
-          pkgs.zoom-us,
-          pkgs.firefox,
-          pkgs.brave,
-          pkgs.handbrake,
-          pkgs.postman,
-          pkgs.discord,
-          pkgs.slack,
+          #casks packages
+          # pkgs.obs-studio
+          pkgs.obsidian
+          # pkgs.bitwarden-desktop
+          pkgs.vscode
+          # pkgs.protonvpn-gui
+          # pkgs.anydesk
+          pkgs.telegram-desktop
+          # pkgs.spotify
+          # pkgs.vlc
+          pkgs.audacity
+          # pkgs.blender
+          # pkgs.filezilla
+          pkgs.docker_27
+          pkgs.zoom-us
+          # pkgs.firefox
+          # pkgs.brave
+          # pkgs.handbrake
+          pkgs.postman
+          pkgs.discord
+          pkgs.slack
         ];
 
         homebrew = {
@@ -57,7 +58,7 @@
           ];
           casks = [
             "the-unarchiver"
-            "irunwebcam"
+            "iriunwebcam"
             "darktable"
             "figma"
             "wave"
@@ -102,8 +103,8 @@
     # $ darwin-rebuild build --flake .#air-m1
     darwinConfigurations."air-m1" = nix-darwin.lib.darwinSystem {
       modules = [ 
-        configuration,
-        nix.homebrew.darwinModules.nix-homebrew
+        configuration
+        nix-homebrew.darwinModules.nix-homebrew
         {
           nix-homebrew = {
             enable = true;
@@ -113,7 +114,7 @@
              user = "deepesh";
 
              autoMigrate = true;
-          }
+          };
         }
       ];
     };
